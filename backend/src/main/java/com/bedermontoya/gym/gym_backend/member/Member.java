@@ -3,15 +3,13 @@ package com.bedermontoya.gym.gym_backend.member;
 import jakarta.persistence.*;
 import java.time.*;
 
-import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
-
 @Entity
 @Table(name = "members")
 
 public class Member {
 
-    @Id 
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "member_number", nullable = false, unique = true)
@@ -20,13 +18,13 @@ public class Member {
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "middle_name", nullable = true)
+    @Column(name = "middle_name")
     private String middleName;
 
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "second_last_name", nullable = true)
+    @Column(name = "second_last_name")
     private String secondLastName;
 
     @Column(name = "birth_date", nullable = false)
@@ -35,7 +33,7 @@ public class Member {
     @Column(name = "phone", nullable = false)
     private String phone;
 
-    @Column (name = "address", nullable = false)
+    @Column(name = "address")
     private String address;
 
     @Column(name = "emergency_contact_name", nullable = false)
@@ -44,11 +42,26 @@ public class Member {
     @Column(name = "emergency_contact_phone", nullable = false)
     private String emergencyContactPhone;
 
-    @Column (name = "status", nullable = false)
+    @Column(name = "photo_path")
+    private String photoPath;
+
+    @Column(name = "status", nullable = false)
     private String status;
 
-    @Column (name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    @PrePersist
+    void prePersist() {
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
+
+        if (this.status == null) {
+            this.status = "ACTIVE";
+        }
+
+    }
 
     public Integer getId() {
         return id;
@@ -154,5 +167,12 @@ public class Member {
         this.createdAt = createdAt;
     }
 
-    
+    public String getPhotoPath() {
+        return photoPath;
+    }
+
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
+    }
+
 }
